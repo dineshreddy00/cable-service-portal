@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sri GTPL Cable Service</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+const savedMobile = localStorage.getItem("mobile");
+if (!savedMobile) {
+  window.location.href = "login.html";
+}
+</script>
+
+<header>
+  <h1>Sri GTPL Cable Service</h1>
+  <p>New Connection | Complaint | Cable TV Support</p>
+  <button onclick="logout()">Logout</button>
+</header>
+
+<section class="hero">
+  <h2>Fast Cable TV Service in Your Village</h2>
+  <p>For new connection or complaint, contact us directly.</p>
+
+  <a class="btn" href="tel:+918897996098">Call Now</a>
+  <a class="btn whatsapp" href="https://wa.me/918897996098">WhatsApp Now</a>
+</section>
+
+<section class="plans">
+  <h2>Our Services</h2>
+
+  <div class="cards">
+    <div class="card">New Cable Connection</div>
+    <div class="card">Monthly Recharge Support</div>
+    <div class="card">Signal Problem Complaint</div>
+    <div class="card">Set Top Box Support</div>
+  </div>
+</section>
+
+<section class="form-section">
+  <h2>Submit Request</h2>
+
+  <input id="name" placeholder="Your Name">
+  <input id="village" placeholder="Village / Area">
+
+  <select id="type">
+    <option value="">Select Request Type</option>
+    <option>New Connection</option>
+    <option>Complaint</option>
+    <option>Recharge Support</option>
+    <option>Set Top Box Issue</option>
+  </select>
+
+  <textarea id="message" placeholder="Message optional"></textarea>
+
+  <button onclick="submitRequest()">Submit Request</button>
+  <p id="response"></p>
+</section>
+
+<footer>
+  <p>© 2026 Sri GTPL Cable Service</p>
+</footer>
+
+<script>
+async function submitRequest() {
+  const name = document.getElementById("name").value;
+  const phone = localStorage.getItem("mobile");
+  const village = document.getElementById("village").value;
+  const type = document.getElementById("type").value;
+  const message = document.getElementById("message").value;
+
+  const res = await fetch("/request", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ name, phone, village, type, message })
+  });
+
+  const data = await res.json();
+  document.getElementById("response").innerText = data.message;
+}
+
+function logout() {
+  localStorage.removeItem("mobile");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

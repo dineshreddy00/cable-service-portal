@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Admin Dashboard</h1>
+  <p>View customer requests</p>
+</header>
+
+<section class="admin">
+  <button onclick="loadRequests()">Load Requests</button>
+  <div id="requests"></div>
+</section>
+
+<script>
+async function loadRequests() {
+  const res = await fetch("/admin/requests");
+  const data = await res.json();
+
+  let html = "<table><tr><th>ID</th><th>Name</th><th>Phone</th><th>Village</th><th>Type</th><th>Message</th><th>Date</th></tr>";
+
+  data.forEach(r => {
+    html += `<tr>
+      <td>${r.id}</td>
+      <td>${r.name}</td>
+      <td>${r.phone}</td>
+      <td>${r.village}</td>
+      <td>${r.type}</td>
+      <td>${r.message || "-"}</td>
+      <td>${r.created_at}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+  document.getElementById("requests").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
